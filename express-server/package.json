@@ -9,9 +9,11 @@
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
+    "jsonwebtoken": "^9.0.0",
     "morgan": "~1.9.1"
   },
   "main": "app.js",
