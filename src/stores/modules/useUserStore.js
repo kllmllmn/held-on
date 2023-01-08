@@ -3,6 +3,8 @@ import { defineStore } from 'pinia'
 export const useUserStore = defineStore('userStore', {
   state: () => ({
     token: '',
+    userInfo: {},
+    menuList: [],
   }),
   getters: {
     // finishedTodos(state) {
@@ -16,6 +18,15 @@ export const useUserStore = defineStore('userStore', {
       // 你可以直接改变状态
       this.token = token
     },
+    setUserInfo(userInfo) {
+      this.userInfo = userInfo
+    },
+    setMenuList(menuList) {
+      this.menuList = menuList
+    },
   },
-  persist: true,
+  persist: {
+    enabled: true,
+    storage: sessionStorage,
+  },
 })

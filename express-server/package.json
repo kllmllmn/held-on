@@ -20,5 +20,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "express-jwt": "^8.3.0"
+  }
 }

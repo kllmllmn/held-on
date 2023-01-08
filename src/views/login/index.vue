@@ -6,7 +6,9 @@
         :model="ruleForm"
         :rules="rules"
         label-width="auto"
+        class="login-form"
       >
+        <div class="text">欢迎登录</div>
         <el-form-item label="账号" prop="loginName">
           <el-input v-model="ruleForm.loginName" />
         </el-form-item>
@@ -15,10 +17,12 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="submitForm(ruleFormRef)">
-            登录
-          </el-button>
-          <el-button @click="resetForm(ruleFormRef)">重置</el-button>
+          <div class="login-button">
+            <el-button type="primary" @click="submitForm(ruleFormRef)">
+              登录
+            </el-button>
+            <el-button @click="resetForm(ruleFormRef)">重置</el-button>
+          </div>
         </el-form-item>
       </el-form>
     </div>
@@ -53,17 +57,33 @@ const rules = {
 
 const submitForm = async (formEl) => {
   if (!formEl) return
-  await formEl.validate(async (valid, fields) => {
-    if (valid) {
-      const res = await Api.login(JSON.parse(JSON.stringify(ruleForm)))
-      if (res.success) {
-        userStore.setToken(res.data)
-        console.log(userStore)
-      }
-    } else {
-      console.log('error submit!', fields)
-    }
-  })
+  await formEl.validate()
+  await fetchToken()
+  Promise.all([fetchUserInfo(), fetchMenuList()])
+  // fetchUserInfo()
+  // fetchMenuList()
+  console.log(userStore)
+}
+
+const fetchToken = async () => {
+  const res = await Api.fetchToken(JSON.parse(JSON.stringify(ruleForm)))
+  // const res = await API.login.login(JSON.parse(JSON.stringify(ruleForm)))
+  if (res.success) {
+    userStore.setToken(res.data)
+  }
+}
+
+const fetchUserInfo = async () => {
+  const res = await Api.fetchUserInfo()
+  if (res.success) {
+    userStore.setUserInfo(res.data.userInfo)
+  }
+}
+const fetchMenuList = async () => {
+  const res = await Api.fetchMenuList()
+  if (res.success) {
+    userStore.setMenuList(res.data)
+  }
 }
 
 const resetForm = (formEl) => {
@@ -75,19 +95,28 @@ const resetForm = (formEl) => {
 <style scoped lang="less">
 .login-index {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   height: 100%;
   background: #fff url('@/assets/images/1.jpg') no-repeat fixed center;
   .wrap-box {
-    display: flex;
+    div.text {
+      text-align: center;
+      font-size: 24px;
+      color: aquamarine;
+      margin-bottom: 15px;
+    }
     width: 500px;
     height: 500px;
-    background-color: rgb(209, 198, 198);
-    justify-content: center;
-    align-items: center;
-    margin: auto;
+    background-color: rgba(209, 198, 198, 0.7);
     border-radius: 10px;
-    box-shadow: 10px 10px 5px #888888;
+    // box-shadow: 10px 10px 5px #888888;
+    .login-form {
+      margin-top: 160px;
+      .login-button {
+        margin: auto;
+      }
+    }
   }
 }
 </style>

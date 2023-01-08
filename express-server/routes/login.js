@@ -1,7 +1,13 @@
 var express = require('express')
 var router = express.Router()
-import { isLogin } from '../controller/login.controller'
-/* GET home page. */
-router.post('/verification', isLogin)
+import {
+  getToken,
+  getUserInfo,
+  getMenuList,
+} from '../controller/login.controller'
+
+router.post('/', getToken)
+router.get('/getUserInfo', getUserInfo)
+router.get('/getMenuList', getMenuList)
 
 module.exports = router
