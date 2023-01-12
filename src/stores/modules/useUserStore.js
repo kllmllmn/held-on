@@ -28,5 +28,6 @@ export const useUserStore = defineStore('userStore', {
   persist: {
     enabled: true,
     storage: sessionStorage,
+    paths: ['token', 'userInfo'], // 想要持久化的数据
   },
 })

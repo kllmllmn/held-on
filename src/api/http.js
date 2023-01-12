@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { getToken } from '@/utils/token'
+import { ElMessage } from 'element-plus'
 
 // 创建一个axios实例
 const http = axios.create({
@@ -31,6 +32,14 @@ http.interceptors.request.use(
 http.interceptors.response.use(
   (res) => {
     // console.log(res, 'res')
+    if (res.data instanceof Blob) {
+      // 若返回的是Blob对象
+      return Promise.resolve(res.data)
+    }
+    if (!res.data.success) {
+      // 全局失败提示
+      ElMessage.error(res.data.msg || '调用失败')
+    }
     // 成功响应的拦截
     return Promise.resolve(res.data)
   },

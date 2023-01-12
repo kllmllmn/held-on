@@ -33,14 +33,16 @@
 import { reactive, ref } from 'vue'
 import Api from '@/api/modules/login'
 import { useUserStore } from '@/stores/modules/useUserStore'
+import { initDynamicRoutes } from '@/router/modules/dynamicRoutes'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const userStore = useUserStore()
 const ruleFormRef = ref()
 const ruleForm = reactive({
   loginName: '',
   password: '',
 })
-
 const rules = {
   loginName: [
     {
@@ -59,10 +61,11 @@ const submitForm = async (formEl) => {
   if (!formEl) return
   await formEl.validate()
   await fetchToken()
-  Promise.all([fetchUserInfo(), fetchMenuList()])
+  await Promise.all([fetchUserInfo(), fetchMenuList()])
+  await initDynamicRoutes(router)
+  router.push({ name: 'home' })
   // fetchUserInfo()
   // fetchMenuList()
-  console.log(userStore)
 }
 
 const fetchToken = async () => {
